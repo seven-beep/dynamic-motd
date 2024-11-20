@@ -25,14 +25,26 @@ import sys
 import time
 
 
-def get_ip_addr():
-    """Find the local ip address on the given device"""
-    ip_output_list = (
-        subprocess.check_output(["hostname", "-I"]).decode("utf-8").split(" ")
-    )
+def dev_addr(device):
+    """find the local ip address on the given device"""
+    if device is None:
+        return None
+    for l in os.popen("ip route list dev " + device):
+        seen = ""
+        for a in l.split():
+            if seen == "src":
+                return a
+            seen = a
+    return None
 
-    if bool(ip_output_list):
-        return ip_output_list[0]
+
+def default_dev():
+    """find the device where our default route is"""
+    for l in open("/proc/net/route").readlines():
+        a = l.split()
+        if a[1] == "00000000":
+            return a[0]
+    return None
 
 
 def get_users():
@@ -117,6 +129,7 @@ def main():
     meminfo = proc_meminfo()
     memperc = (
         f"{100 - 100. * meminfo['MemAvailable:'] / (meminfo['MemTotal:'] or 1):.2f}%"
+    ip_addr = dev_addr(default_dev())
     )
     SWAPPERC = (
         f"{100 - 100. * meminfo['SwapFree:'] / (meminfo['SwapTotal:'] or 1):.2f}%"
