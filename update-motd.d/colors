@@ -1,19 +1,21 @@
-NONE="\e[m"
-export NONE
-
-WHITE="\e[1;37m"
-export WHITE
-GREEN="\e[1;32m"
-export GREEN
-RED="\e[0;32;31m"
-export RED
-YELLOW="\e[1;33m"
-export YELLOW
-BLUE="\e[34m"
-export BLUE
-CYAN="\e[36m"
-export CYAN
-LIGHT_GREEN="\e[1;32m"
-export LIGHT_GREEN
-LIGHT_RED="\e[1;31m"
-export LIGHT_RED
+if [ "$NO_COLOR" -eq 1 ] ; then
+    export NONE=""
+    export WHITE=""
+    export GREEN=""
+    export RED=""
+    export YELLOW=""
+    export BLUE=""
+    export CYAN=""
+    export LIGHT_GREEN=""
+    export LIGHT_RED=""
+else
+    export NONE="\e[m"
+    export WHITE="\e[1;37m"
+    export GREEN="\e[1;32m"
+    export RED="\e[0;32;31m"
+    export YELLOW="\e[1;33m"
+    export BLUE="\e[34m"
+    export CYAN="\e[36m"
+    export LIGHT_GREEN="\e[1;32m"
+    export LIGHT_RED="\e[1;31m"
+fi
