@@ -90,7 +90,7 @@ def get_filesystems():
                 "--fstab",
                 "--json",
                 "--types",
-                "notmpfs,noswap",
+                "notmpfs,noswap,nodevtmpfs",
                 "--df",
             ]
         )
