@@ -1,4 +1,4 @@
-if [ "$NO_COLOR" -eq 1 ] ; then
+if [ x"$NO_COLOR" = x1 ] ; then
     export NONE=""
     export WHITE=""
     export GREEN=""
