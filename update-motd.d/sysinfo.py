@@ -137,8 +137,7 @@ def main():
         swapperc = "---"
 
     print(
-        """
-System information as of %s on %s
+        """System information as of %s on %s
 """
         % (time.asctime(), ip_addr)
     )
@@ -159,9 +158,7 @@ System information as of %s on %s
     if users != "":
         print(
             f"""
-  Logged in users: {users}
-
-"""
+  Logged in users: {users}"""
         )
 
     sys.exit(0)
