@@ -24,6 +24,17 @@ import subprocess
 import sys
 import time
 
+import utmp
+
+
+def utmp_count():
+    """Count user processes"""
+    l_users = 0
+    for i in utmp.UtmpRecord():
+        if i.ut_type == utmp.USER_PROCESS:
+            l_users += 1
+    return l_users
+
 
 def dev_addr(device):
     """find the local ip address on the given device"""
@@ -45,25 +56,6 @@ def default_dev():
         if a[1] == "00000000":
             return a[0]
     return None
-
-
-def get_users():
-    """Get the users connected on this machine."""
-    # Run the who command and capture its output
-    who_output_list = subprocess.check_output(["who"]).decode("utf-8").split("\n")
-    # Create a set to store unique usernames
-    unique_users = set()
-
-    # Iterate through each line and extract usernames
-    for line in who_output_list:
-        line_list = line.split()
-        if bool(line_list):
-            unique_users.add(line_list[0])
-
-    # Join the unique usernames into a single string separated by commas
-    result = ", ".join(unique_users)
-
-    return result
 
 
 def proc_meminfo():
@@ -119,6 +111,7 @@ def get_filesystems():
 
 def main():
 
+    logged_users = utmp_count()
     with open("/proc/loadavg", encoding="ASCII") as avg_line:
         loadav = float(avg_line.read().split()[1])
     processes = len(glob.glob("/proc/[0-9]*"))
@@ -131,7 +124,6 @@ def main():
     swapperc = "%d%%" % (
         100 - 100.0 * meminfo["SwapFree:"] / (meminfo["SwapTotal:"] or 1)
     )
-    users = get_users()
 
     if meminfo["SwapTotal:"] == 0:
         swapperc = "---"
@@ -155,11 +147,16 @@ def main():
             " %-21s %-4s of %-9s %s" % (f["target"], f["use%"], f["size"], f["inodes%"])
         )
 
-    if users != "":
-        print(
-            f"""
-  Logged in users: {users}"""
-        )
+    if logged_users > 0:
+        a = utmp.UtmpRecord()
+        print(f"\n  {logged_users} logged in users:")
+        for b in a:
+            if b.ut_type == utmp.USER_PROCESS:
+                print(
+                    f"  \033[1;31m{b.ut_user: <10}\033[m from {b.ut_host: <25}"
+                    f" at {time.ctime(b.ut_tv[0]): <20}"
+                )
+        a.endutent()
 
     sys.exit(0)
 

@@ -14,23 +14,23 @@ Example:
 
   Debian GNU/Linux 12 (bookworm) (kernel 6.1.0-7-amd64)
 
-System information as of Fri Sep  6 10:26:52 2024 on 192.168.1.20
+System information as of Wed Jan 22 15:35:40 2025 on x.x.x.x
 
-System load:  0.01                 Processes:    211
-Memory usage: 24.40%               Swap usage:   0.02%
+System load:  0.07                 Processes:    244
+Memory usage: 26%                  Swap usage:   1%
 
   Mount points          Disk usage        Inodes usage
- /                     18%  of 14G       8.7% of 938400
- /boot                 8%   of 1.8G      0.0% of 999936
- /boot/efi             1%   of 974.1M    Not available
- /opt                  3%   of 4.6G      0.0% of 312624
- /var                  13%  of 4.6G      1.4% of 312624
- /var/log              2%   of 4.6G      0.0% of 312624
- /var/log/audit        0%   of 4.6G      0.0% of 312624
- /var/tmp              0%   of 4.6G      0.0% of 312624
+ /boot                 12%  of 977.3M    0.5% of 65808
+ /boot/efi             0%   of 250.1M    Not available
+ /                     13%  of 19.6G     5.0% of 1310720
+ /home                 1%   of 7.8G      1.3% of 524288
+ /var                  43%  of 19.6G     16.6% of 1310720
+ /var/log              2%   of 7.8G      0.0% of 524288
+ /var/log/audit        0%   of 7.8G      0.0% of 524288
+ /var/tmp              0%   of 4.8G      0.0% of 327680
 
-       Logged in users: admin
-
+ 5 logged in users:
+  admin       from x.x.x.x                 at Tue Jan 21 22:43:37 2025
 
 No mail.
 Last login: Mon Apr  3 07:28:01 2023 from laptop.example.org
@@ -55,7 +55,7 @@ sudo apt install ./dynamic-motd_*.deb
 You need to install some packages:
 
 ```
-apt-get install figlet lsb-release bc
+apt-get install figlet lsb-release bc python3-utmp
 ```
 
 Optionally, you can install `needrestart` which is used to show a message if your server need a reboot (main reason (and the only one I know): you have upgraded your kernel).
