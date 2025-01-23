@@ -14,23 +14,27 @@ Example:
 
   Debian GNU/Linux 12 (bookworm) (kernel 6.1.0-7-amd64)
 
-System information as of Wed Jan 22 15:35:40 2025 on x.x.x.x
+System information as of Wed Jan 22 16:02:47 2025 on x.x.x.x
 
-System load:  0.07                 Processes:    244
+System load:  0.07                 Processes:    245
 Memory usage: 26%                  Swap usage:   1%
 
-  Mount points          Disk usage        Inodes usage
- /boot                 12%  of 977.3M    0.5% of 65808
- /boot/efi             0%   of 250.1M    Not available
- /                     13%  of 19.6G     5.0% of 1310720
- /home                 1%   of 7.8G      1.3% of 524288
- /var                  43%  of 19.6G     16.6% of 1310720
- /var/log              2%   of 7.8G      0.0% of 524288
- /var/log/audit        0%   of 7.8G      0.0% of 524288
- /var/tmp              0%   of 4.8G      0.0% of 327680
+  Mount points                        Disk usage        Inodes usage
+ /                                   13%  of 19.6G     5.0% of 1310720
+ /boot                               12%  of 977.3M    0.5% of 65808
+ /var                                43%  of 19.6G     16.6% of 1310720
+ /home                               1%   of 7.8G      1.3% of 524288
+ /var/log                            2%   of 7.8G      0.0% of 524288
+ /var/tmp                            0%   of 4.8G      0.0% of 327680
+ /boot/efi                           0%   of 250.1M    Not available
+ /var/log/audit                      0%   of 7.8G      0.0% of 524288
+ /srv/borg                           0%   of 1.3T      0.0% of 85901312
+ /srv/nextcloud                      13%  of 3T        0.0% of 201326592
+ /mnt/disquette                      78%  of 1.2T      0.1% of 82378752
 
- 5 logged in users:
-  admin       from x.x.x.x                 at Tue Jan 21 22:43:37 2025
+  2 logged in users:
+  user       from x.x.x.x                   at Tue Jan 21 22:43:37 2025
+  user       from x.x.x.x                   at Tue Jan 21 22:43:37 2025
 
 No mail.
 Last login: Mon Apr  3 07:28:01 2023 from laptop.example.org

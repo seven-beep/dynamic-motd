@@ -79,7 +79,6 @@ def get_filesystems():
                 "--noheading",
                 "--real",
                 "--uniq",
-                "--fstab",
                 "--json",
                 "--types",
                 "notmpfs,noswap,nodevtmpfs",
@@ -139,12 +138,12 @@ def main():
 
     print(
         """
-  Mount points          Disk usage        Inodes usage"""
+  Mount points                         Disk usage       Inodes usage"""
     )
 
     for f in filesystems:
         print(
-            " %-21s %-4s of %-9s %s" % (f["target"], f["use%"], f["size"], f["inodes%"])
+            " %-35s %-4s of %-9s %s" % (f["target"], f["use%"], f["size"], f["inodes%"])
         )
 
     if logged_users > 0:
