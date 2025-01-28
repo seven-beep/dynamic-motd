@@ -36,28 +36,6 @@ def utmp_count():
     return l_users
 
 
-def dev_addr(device):
-    """find the local ip address on the given device"""
-    if device is None:
-        return None
-    for l in os.popen("ip route list dev " + device):
-        seen = ""
-        for a in l.split():
-            if seen == "src":
-                return a
-            seen = a
-    return None
-
-
-def default_dev():
-    """find the device where our default route is"""
-    for l in open("/proc/net/route").readlines():
-        a = l.split()
-        if a[1] == "00000000":
-            return a[0]
-    return None
-
-
 def proc_meminfo():
     """Get memory usage informations"""
     items = {}
@@ -116,7 +94,6 @@ def main():
     processes = len(glob.glob("/proc/[0-9]*"))
     meminfo = proc_meminfo()
     filesystems = get_filesystems()
-    ip_addr = dev_addr(default_dev())
     memperc = "%d%%" % (
         100 - 100.0 * meminfo["MemAvailable:"] / (meminfo["MemTotal:"] or 1)
     )
@@ -127,12 +104,7 @@ def main():
     if meminfo["SwapTotal:"] == 0:
         swapperc = "---"
 
-    print(
-        """System information as of %s on %s
-"""
-        % (time.asctime(), ip_addr)
-    )
-
+    print("System information as of %s\n" % time.asctime())
     print("System load:  %-5.2f                Processes:    %d" % (loadav, processes))
     print("Memory usage: %-4s                 Swap usage:   %s" % (memperc, swapperc))
 

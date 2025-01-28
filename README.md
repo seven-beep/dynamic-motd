@@ -14,7 +14,7 @@ Example:
 
   Debian GNU/Linux 12 (bookworm) (kernel 6.1.0-7-amd64)
 
-System information as of Wed Jan 22 16:02:47 2025 on x.x.x.x
+System information as of Wed Jan 22 16:02:47 2025
 
 System load:  0.07                 Processes:    245
 Memory usage: 26%                  Swap usage:   1%
