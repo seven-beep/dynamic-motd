@@ -14,8 +14,8 @@ inspired by ubuntu 14.10 /etc/update-motd.d/50-landscape-sysinfo
 2014-10-13 V1.2 -- jw, survive without network
 2016, 2023      -- Luc Didry
 2024-09-04 V1.3 -- 7b, remove dependance on utmp, rework disk usage, add error
+handling, change spacing...
 2025-09-25 V1.4 -- 7b, timeout on filesystem scan
-handling, change spacing, restore ip address.
 """
 
 import functools
@@ -102,7 +102,7 @@ def get_filesystems():
                 "--uniq",
                 "--json",
                 "--types",
-                "notmpfs,noswap,nodevtmpfs",
+                "notmpfs,noswap,nodevtmpfs,noxenfs",
                 "--df",
             ]
         )
