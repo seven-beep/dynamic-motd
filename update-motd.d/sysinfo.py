@@ -14,17 +14,60 @@ inspired by ubuntu 14.10 /etc/update-motd.d/50-landscape-sysinfo
 2014-10-13 V1.2 -- jw, survive without network
 2016, 2023      -- Luc Didry
 2024-09-04 V1.3 -- 7b, remove dependance on utmp, rework disk usage, add error
+2025-09-25 V1.4 -- 7b, timeout on filesystem scan
 handling, change spacing, restore ip address.
 """
 
+import functools
 import glob
 import json
 import os
+import signal
 import subprocess
 import sys
 import time
 
 import utmp
+
+
+class TimeoutError(Exception):
+    pass
+
+
+def timeout(seconds, default=None):
+    """Timeout decorator, parameter in seconds."""
+
+    def timeout_decorator(func):
+        """Wrap the original function."""
+
+        @functools.wraps(func)
+        def func_wrapper(*args, **kwargs):
+            """Timeout using signal."""
+
+            def handler(signum, frame):
+                raise TimeoutError(
+                    "{0}: {1} - Timeout after {2} seconds".format(
+                        __file__, func.__name__, seconds
+                    )
+                )
+
+            # Set the timeout handler.
+            signal.signal(signal.SIGALRM, handler)
+            signal.alarm(seconds)
+            result = default
+            try:
+                result = func(*args, **kwargs)
+            except TimeoutError as exc:
+                # Handle the timeout.
+                print(str(exc))
+            finally:
+                # Cancel the timer.
+                signal.alarm(0)
+            return result
+
+        return func_wrapper
+
+    return timeout_decorator
 
 
 def utmp_count():
@@ -47,9 +90,9 @@ def proc_meminfo():
     return items
 
 
+@timeout(2)
 def get_filesystems():
-    """Get the real filesystem information for all entries in /etc/fstab."""
-    # Only using fstab values to filter the mess that can be containerisation or bind mounts.
+    """Get the real filesystem monted informations."""
     filesystems = json.loads(
         subprocess.check_output(
             [
@@ -93,7 +136,6 @@ def main():
         loadav = float(avg_line.read().split()[1])
     processes = len(glob.glob("/proc/[0-9]*"))
     meminfo = proc_meminfo()
-    filesystems = get_filesystems()
     memperc = "%d%%" % (
         100 - 100.0 * meminfo["MemAvailable:"] / (meminfo["MemTotal:"] or 1)
     )
@@ -108,15 +150,17 @@ def main():
     print("System load:  %-5.2f                Processes:    %d" % (loadav, processes))
     print("Memory usage: %-4s                 Swap usage:   %s" % (memperc, swapperc))
 
-    print(
-        """
-  Mount points                         Disk usage       Inodes usage"""
-    )
-
-    for f in filesystems:
+    filesystems = get_filesystems()
+    if filesystems:
         print(
-            " %-35s %-4s of %-9s %s" % (f["target"], f["use%"], f["size"], f["inodes%"])
+            """
+   Mount points                       Disk usage        Inodes usage"""
         )
+        for f in filesystems:
+            print(
+                " %-35s %-4s of %-9s %s"
+                % (f["target"], f["use%"], f["size"], f["inodes%"])
+            )
 
     if logged_users > 0:
         a = utmp.UtmpRecord()
